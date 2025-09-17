@@ -1,0 +1,8 @@
+RBAFig/RBA-figure1.pdf: "RBA 100 upper ends=True S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 100 lower ends=True S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 30 upper ends=True S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 30 lower ends=True S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 100 upper ends=False S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 100 lower ends=False S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 30 upper ends=False S&P500.csv"
+RBAFig/RBA-figure1.pdf: "RBA 30 lower ends=False S&P500.csv"

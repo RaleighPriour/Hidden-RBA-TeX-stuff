@@ -1,0 +1,691 @@
+%Structure:title page; abstract; keywords; main text introduction, materials and methods, 
+%results, discussion; acknowledgments; declaration of interest statement; references; appendices (as appropriate);
+% table(s) and figure(s) and their captions placed within the text.
+%Footnotes should be generally avoided, replaced with remarks in the text or placed in an appendix.
+% When a footnote is absolutely necessary, please keep it brief and do not include mathematical expressions
+%References within the text should give the authors' names, followed 
+% by the year of publication in parentheses. References should be listed
+% in alphabetical order at the end of the manuscript, after any appendixes
+% but before any tables and figures. In this list, each reference should 
+% contain, in the following order, the last name and initials of the author
+% followed by those of the coauthors, year of publication, title of 
+% reference, source, volume number, and page. Do not abbreviate journal
+% titles. References to books must include the publisher's name and location.
+% Only list references actually cited in the text.
+\documentclass[12pt,letterpaper]{article}
+\usepackage{tikz}
+%\usetikzlibrary{datavisualization}
+%\usetikzlibrary{datavisualization.formats.functions}
+\usepackage[fleqn]{amsmath}
+%\usepackage{amsrefs}
+\usepackage{amssymb}% For Blackboard Fonts
+\usepackage[indent=4ex,skip=.5\baselineskip]{parskip}
+\usepackage{indentfirst}
+\usepackage{centernot}
+\usepackage{physics}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{url}
+%\usepackage{bm}
+\usepackage[perpage, symbol*]{footmisc}
+\setfnsymbol{lamport}
+\usepackage{cite}
+%\usepackage{nicefrac}
+% \usepackage{graphicx}
+\usepackage{pgfplots}
+\pgfplotsset{
+    compat=newest,
+}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{external}
+\tikzexternalize[prefix=RBAFig/]
+%\usepackage[thinc]{esdiff}
+%\usepackage{lipsum}
+% Expectation symbol
+\usepackage{amsfonts} %% <\m also included by amssymb
+\DeclareMathSymbol{\m}{\mathbin}{AMSa}{"39}
+\DeclareMathOperator*{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\brokenpenalty=200\relax
+\title{Robust Bayesian Statistics for Bernoulli Trials}
+\author{Raleigh Bracewell Isadore Priour\\Raleigh@1337maps.com\\Tivy High School}
+\date{April 2025}
+\makeatletter
+\renewcommand{\@makefnmark}{\hbox{\textsuperscript{\textbf{\tiny{\@thefnmark}}}}}
+\makeatother
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+\begin{document}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\\\thepage}
+\fancyfoot[L]{{\textsuperscript{\textsubscript{\copyright}}} 2025 Raleigh Priour All Rights Reserved}
+\setlength{\mathindent}{0cm}
+\setlength{\abovedisplayskip}{0pt}%
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}%
+\setlength{\belowdisplayshortskip}{0pt}
+\allowdisplaybreaks
+\maketitle
+\section{Abstract}
+Bayesian Analysis allows for a complete description of one's beliefs about the outcomes of events.
+Although different people have different beliefs (priors), Robust Bayesian Analysis (RBA) allows one to start
+from a baseline prior, for example an uninformative prior, and accepts all beliefs obtainable from that prior
+given one saw at most the degree of prior certitude of beliefs, $d$, more points of evidence as reasonable. 
+Inside the collection of reasonable probability distribution, nothing can be said about which prior/posterior is the \textit{correct} one. 
+The point of Robust Bayesian Statistics is to convince ones audience of their result by encapsulating the viewer's belief's in their baseline.
+Which departs from the usual goal of statistics to efficiently as possible determine conclusion from the data. 
+In short, the goal of Robust Bayesian Statistics is to be convincing rather than efficent.
+This paper goes through the derivation of the beta distribution as the conjugate prior for
+the binomial distribution. Then it derives formulas and inequalities for Robust Bayesian Analysis of Bernoulli Trials.
+In order to explain a graphing algorithm, which the author has implemented in python, 
+for the maximum and minimum reasonable probabilities about the chance of success, $p_s$, of the binomial distribution. 
+The author uses the last 30 years of the S\&P 500\cite{SP500} as an example to illustrate the methods covered in the paper.
+\pagebreak
+\tableofcontents
+\par
+This paper uses the nonstandard notation of $x!$ instead of the cumbersome $\Gamma(x+1)$ notation.
+\section{Bayesian Inference for Bernoulli Trials}
+\subsection{Introduction to the Beta Distribution}
+\par
+Consider that someone has just started out as a vacuum salesperson going door to door trying to 
+figure out the chance\footnote{Probability is the correct term; however, this creates esoteric sentences 
+like the probability that the probability is 20\%.} for someone opening the door and buying their product, $p_s$. 
+They have never sold a vacuum before and assume the probability of the chances of success are equal likely; therefore,
+their probability density function (pdf), $f$, for the chance of success is  $f(x)=1 \text{ for } x \in [0,1] $ where 
+$x$ is the chance(probability) of success.
+\par
+Suppose the first two houses they went to did not buy a vacuum and let
+$x=p_s$  therefore  $1\!\m\! x=1\!\m\! p_s=p_f$ where  $p_f$  is the probability of failure.
+Given $p_f$ the probability of getting 2 failures and 0 successes is $(1\!\m\! p_f)^2$. \allowbreak The \mbox{(probability that $p_s=x$)$\propto (1\!\m\! x)^2$}. 
+Integrating ones gets $ \displaystyle\int_0^1 (1\!\m\! x)^2 dx =\eval{ \m \frac{1}{3}(1 \m x)^3 + C}_0^1=\frac{1}{3} $ therefore 
+\allowbreak $\displaystyle\Pr(p_s=x|\text{2 failures})\footnote{$\Pr(X|Y)$ means the probability of X given Y.}=3(1\!\m\! x)^2$ 
+with the $3$ having no significance other than being the normalization constant. 
+In general,\vspace{.7ex} \allowbreak \mbox{$\Pr(X | \text{Data})=\displaystyle\frac{\Pr(\text{Data} | X)\Pr(X)}{\Pr(\text{Data})}$}  (Baye's Theorem). 
+\vspace{.3ex}This is the called the posterior distribution with $\Pr(p_s=x)=1$ being the prior distribution. 
+Now assume one has $a$ successes and $b$ failures with the total number of observations, $n=a+b$. 
+Then \allowbreak \mbox{$\Pr(p_s=x)\propto \Pr(\text{Success})^a \Pr(\text{Failure})^b=x^a (1\!\m\! x)^b$}. 
+With \mbox{$\Pr(p_s=x)=\displaystyle\frac{x^a (1\!\m\! x)^b}{\int_{0}^{1} x^a (1\!\m\! x)^b dx}\quad\!$}\allowbreak let 
+\mbox{$g(a,b)=\displaystyle\int_{0}^{1}x^a (1\!\m\! x)^b dx$}  \allowbreak
+\begin{flalign*}
+   &g(a,b)=\int_{0}^{1}x^a (1\!\m\! x)^{b}dx=\eval{\frac{x^{a+1}}{a+1}(1\!\m\! x)^b}_0^1 \!-\!  \int_{0}^{1}\frac{-b}{a+1}x^{a+1} (1\!\m\! x)^{b\m 1} dx  \\
+   &\phantom{g(a,b)}=0+\frac{b}{a+1}g(a+1,b\!\m\! 1)\quad \text{for } b \ge 1  \\
+   &\phantom{g(a,b)}=\frac{b}{a+1}\frac{b\!\m\! 1}{a+2}\cdot \ldots \cdot \frac{2}{a+b\!\m\! 1} \frac{1}{a+b}g(a+b,0) \\
+   &\phantom{g(a,b)}=b!\frac{a!}{(a+b)!}\int_{0}^{1}x^{a+b}dx=\frac{a!b!}{(a+b)!}\frac{1}{a+b+1}=\frac{a!b!}{(a+b+1)!}\therefore\\
+   &g(a,b)=\int_{0}^{1} x^a (1\!\m\! x)^b dx=\frac{a!b!}{(a+b+1)!}\\
+   &\text{Therefore}\quad \frac{(a+b+1)!}{a!b!}\int_{0}^{1}x^a (1\!\m\! x)^b dx = \frac{(a+b+1)!}{a!b!}\frac{a!b!}{(a+b+1)!}=1\\
+   &\text{So} \quad \Pr(p_s=x)=\frac{(a+b+1)!}{a!b!}x^a (1\!\m\! x)^b=\frac{(n+1)!}{a!b!}x^a (1\!\m\! x)^b\\ 
+   &\text{From this we form the beta distribution } B(x;a,b)=\frac{(a+b+1)!}{a!b!}x^a (1\!\m\! x)^b\\ 
+\end{flalign*}
+\subsection{Descriptive Statistics of the Beta Distribution}
+\begin{flalign*}
+   &\E[B(a,b)]=\int_{0}^{1}\frac{(a+b+1)!}{a!b!}x^a (1\!\m\! x)^b x dx=\int_{0}^{1}\frac{(a+b+1)!}{a!b!}x^{a+1} (1\!\m\! x)^b dx\\
+   &\phantom{\E[B(a,b)]}=\int_{0}^{1}\frac{(a+b+1)!}{a!b!}\frac{a+1+b+1}{a+1}\frac{a+1}{a+1+b+1}x^{a+1} (1\!\m\! x)^b dx\\
+   &\phantom{\E[B(a,b)]}=\int_{0}^{1}\frac{(a+1+b+1)!}{(a+1)!b!}\frac{a+1}{a+b+2}x^{a+1} (1\!\m\! x)^b dx\\
+   &\phantom{\E[B(a,b)]}=\frac{a+1}{a+b+2}\int_{0}^{1}\frac{(a+1+b+1)!}{(a+1)!b!}x^{a+1} (1\!\m\! x)^b dx\\
+   &\E[B(a,b)]=\frac{a+1}{a+b+2}\cdot1=\frac{a+1}{a+b+2} \allowdisplaybreaks \\ 
+   &\E[B(a,b)^2]=\int_{0}^{1}\frac{(a+b+1)!}{a!b!}x^a (1\!\m\! x)^b x^2 dx=\int_{0}^{1}\frac{(a+b+1)!}{a!b!}x^{a+2} (1\!\m\! x)^b dx\\   
+   &\phantom{\E[B(a,b)]^2}=\int_{0}^{1}\frac{(a+b+1)!(a+b+2)(a+b+3)(a+1)(a+2)}{a!b!(a+1)(a+2)(a+b+2)(a+b+3)}x^{a+2} (1\!\m\! x)^b dx\\
+   &\phantom{\E[B(a,b)]^2}=\int_{0}^{1}\frac{(a+b+3)!}{(a+2)!b!}\frac{(a+1)(a+2)}{(a+b+2)(a+b+3)}x^{a+2} (1\!\m\! x)^b dx\\
+   &\phantom{\E[B(a,b)]^2}=\frac{(a+1)(a+2)}{(a+b+2)(a+b+3)}\int_{0}^{1}\frac{(a+b+3)!}{(a+2)!b!}x^{a+2} (1\!\m\! x)^b dx\\
+   &\E[B(a,b)^2]=\frac{(a+1)(a+2)}{(a+b+2)(a+b+3)} \\
+   &\Var[B(a,b)]=\E[B(a,b)^2]\!\m\! \E[B(a,b)]^2\\
+   &\phantom{\Var[B(a,b)]}=\frac{(a+1)(a+2)}{(a+b+2)(a+b+3)}\!-\! \left(\frac{a+1}{a+b+2}\right)^2\\
+   &\phantom{\Var[B(a,b)]}=\frac{a+1}{a+b+2}\left(\frac{a+2}{a+b+3}\!-\! \frac{a+1}{a+b+2} \right)\\
+   &\phantom{\Var[B(a,b)]}=\frac{a+1}{a+b+2}\left(\frac{(a+2)(a+b+2)\!\m\! (a+1)(a+b+3)}{(a+b+3)(a+b+2)}\right)\\
+   &\phantom{\Var[B(a,b)]}=\frac{a+1}{a+b+2}\left(\frac{b+1}{(a+b+3)(a+b+2)}\right)\\
+   &\Var[B(a,b)]=\frac{(a+1)(b+1)}{(a+b+2)^2 (a+b+3)} \allowdisplaybreaks \\
+   &\text{Mode for $a,b > 0$} \Leftrightarrow  \argmax_x \ln(B(x;a,b)) \Leftrightarrow \frac{\partial \ln(B(x;a,b))}{\partial x}=0\\
+   &\ln(B(x;a,b))=\ln((a+b+1)!)\!\m\! \ln(a!)\!\m\! \ln(b!)+a\ln(x)+b\ln(x)\\
+   &\frac{\partial \ln(B(x;a,b))}{\partial x}=\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}=0\\
+   &\phantom{\frac{\partial \ln(B(x;a,b))}{\partial x}=}a(1\!\m\! x)\!\m\! bx=0 \therefore x=\frac{a}{a+b}\\
+   &\text{Mode of $B(a,b)$}=\frac{a}{a+b} \quad \text{for $a,b > 0$}
+\end{flalign*}
+\subsection{Example}
+\indent Suppose the salesperson went to 10 more houses and sold 2 vacuums, then their pdf for 
+the chance (probability) of success is $B(x;2,10)$.
+\noindent
+\begin{center}
+   \begin{tikzpicture}
+      \begin{axis}[
+         %title = {$B(x;2,10)$},  % whatever name you want
+         xlabel = {Chance of Success},
+         ylabel = {Probabilty},
+         ymin = 0, ymax = 3.9,
+         xmin=0, xmax=1.02,
+         ytick distance=1,
+         xtick distance=.2,
+         width=.8\textwidth,
+         height=.5\textwidth,
+         axis x line = bottom,
+         axis y line = left,
+         clip=false,
+         legend style={at={(1,.03)},anchor=south east,draw=none}
+         ] 
+         \addlegendimage{empty legend}
+         \addlegendentry [text depth=]
+             {$B(x;2,10)$}         
+         \addplot[black,smooth,thick] table[x=x, y = y, col sep = comma] {B(x;2,10).csv};
+
+      \end{axis}
+  \end{tikzpicture}
+\end{center}
+\section{Framework for Robust Bayesian Statistics}
+\indent There are many problems in which general consensus on the exact prior is not universal. For example, lets say 
+one was modeling the height of Redwood trees as normally distributed with a prior mean, $\mu$, and standard deviation, $\sigma$.
+Now suppose one person modeled $\Pr(\sigma=x) \propto \frac{1}{x}$ while a second person modeled standard deviation as 
+$\Pr(\sigma=x)=x e^{\!\m  x}$.
+Both of these are reasonable priors with the first one being scale invariant, while the second excludes implausible scales such as 
+the tree's standard deviation being a mile. If data is collected and the posteriors for standard deviation disagree on parameters, 
+such as the mean or credibility intervals, then said parameters cannot be derived from the data to much confidence since different 
+reasonable starting points result in incompatible results. There is a popular phrase in statistics, 
+\textit{let the data speak for itself}\footnote{This phrase is popular in frequentist statistics not Bayesian.},
+by incorporating multiple reasonable priors and showing what these posteriors agree allows \textit{the data to speak for itself},
+because it shows how one interprets the data does not significantly affect their conclusion. 
+This is the definition I use for robust Bayesian statistics having statistical procedures that given a little more or less data 
+does not significantly change the posterior.
+\par
+The problem this paper will be focused on is robust Bayesian statistics for the beta distribution.
+We will determine the likelihood that  the S\&P 500 
+will be higher at the end of the next trading day than it was at the last trading day %\footnote{without accounting for inflation.} 
+based off the last 30 years the S\&P 500. The answer is surprisingly low between 52\%$-$55\%.
+\par
+For robust Bayesian statistics, define the reasonable set \allowbreak
+\mbox{$\mathcal{R}(\theta)=\{\, \pi(\theta) \mid \pi \in \Pi \}\ $} for a parameter, $\theta$, with $\Pi$ being the set 
+of all reasonable probability distribution. For many statistics 
+\mbox{$\mathcal{R}(T)=[\inf \mathcal{R}(T),\sup \mathcal{R}(T)]$}\footnote{Interval may include or exclude its endpoints.}.  
+However, the determination of any statistic, $T$, cannot go beyond the precision of \mbox{$\mathcal{R}(T)$}. 
+This means robust Bayesian statistics is incapable of giving pointwise estimates. 
+As annoying as this is, it is a good thing. 
+Imagine asking five respected expert economic forecasters about their economic projections for the next 6 months. 
+With three of the economist predicting moderately strong economic growth, one of them predicting slightly negative growth, 
+and one of them predicting moderately strong negative economic growth, it is tempting to omit the moderately negative 
+prediction and report that economic forecasters anticipate negligible to moderate economic growth.
+However if years of school and experience in the field, producing respected economic predictions cannot lead one to the conclusion that the economy
+will have a more positive outlook, then the data itself is not strong enough to suggest that conclusion. 
+Bayesians generally do not like the phrase \textit{let the data speak for itself} because one's knowledge about the situation (one's prior)
+changes what they take away from the data (their posterior).
+\par
+Now suppose one rotated an object with \mbox{3 sections: \textit{T,S,H}} 
+and got \textit{S,T,H}. Now suppose it was spinner with sides of equal area labeled \textit{T,S,H}. 
+This result would be unsurprising and would not give one knowledge 
+that change their preconceived beliefs about the spinner, that each side is probably approximately equally likely as the others. 
+However, if one took out a random nickel with \textit{H} for heads, \textit{T} for tails, and \textit{S} for the side/edge. 
+One would be extremely surprised about getting \textit{S,T,H}, but would still believe that the coin 
+will still most likely land head or tails and that observing the coin landing on its side was an extremely 
+rare\footnote{However it is not as rare as one would think with a study predicting the probability to be about 1 in 6,000\cite{PhysRevE.48.2547}.} 
+observation. It would be ridiculous to conclude from those 3 coins tosses that the probability of a nickel landing on its edge 
+is about as likely as it landing on its head. It is only rational to incorporate one's knowledge about events in their model 
+which can led the exact same data data leading to radically different conclusion as shown here.
+Fortunately, robust Bayesian statistics does allow \textit{the data to speak for itself} because if all reasonable viewpoints (priors)
+led to the a small $\mathcal{R}(\theta)$ set then one has usable clear conclusions which were not the results of someone's prior 
+but the nature of the data. While it is still annoying to have a small range for a parameter instead of an exact number
+such as the beliefs about the mean of $B(x;a,b)$ ranging from .68 to .72,
+the real annoying truth is we want more precision than the data we collected can give us.
+Going back to the vacuum salesperson example if the actual chance (probability) of success is 
+$31.00\%$ it would take 32868 observations to be 95\% certain that the probability of successes is within $31\% \pm .5\%$ .
+Nonetheless, if a person had a 100 experts in a room there would be very little they could unanimously agree 
+on\footnote{Unless it was about theorems with mathematicians.}. Moreover, if someone just had a Bayesian and a frequentist they could 
+not even agree on the correct definition of probability\footnote{It is the Bayesian one.}.
+Therefore, it does matter on what priors one admits as reasonable to the problem with one aiming to incorporate the minimal range that includes 
+all of the different arguable priors for some parameter. 
+\section{RBA for Bernoulli Trials}
+A good way to construct the collection of reasonable priors is to start with a baseline prior and then defining the reasonable priors as the
+class of posteriors achievable based on seeing at most one's prior degree of certitude, $d$, additional observations. 
+We shall now apply this analysis to Bernoulli trials.
+Without loss of generality assume the baseline prior is $B(0,0)$ with one observing $a_s$ successes, 
+$b_f$ failures, having prior degree of certitude, $d$, and \mbox{$\displaystyle{m=a_s\!+\!b_f\!+\!d}$}. 
+If one wants the baseline prior to be $B(a^\prime,b^\prime)$ that is equivalent to observing $a_s+a^\prime$ successes 
+and $b_f+b^\prime$ failures. 
+\begin{flalign*}
+   &\Pi=\{B(a_s+x,b_f+y) \mid x,y \in \mathbb{R}_{\ge0},x+y \le d\}
+   &\intertext{Denote the ends of $\Pi$ as}
+   &B_f(x)=B(x;a_s,b_f\!+\!d)=\frac{(m+1)!}{a_s!(b_f+d)!}x^{a_s}(1\!\m\! x)^{b_f+d} \text{ and}\\
+   &B_s(x)=B(x;a_s\!+\!d,b_f)=\frac{(m+1)!}{(a_s+d)!b_f!}x^{a_s+d}(1\!\m\! x)^{b_f} \\
+   &\mathcal{R}(\text{Mean})\left[\frac{a_s+1}{a_s+b_f+d+1},\frac{a_s+d+1}{a_s+d+b_f+1}\right] \\
+   &\mathcal{R}(\text{Mode})=\left[\frac{a_s}{a_s+b_f+d},\frac{a_s+d}{a_s+d+b_f}\right]   
+   &\intertext{Variance and standard deviation are tricker, because variance does not decrease monotonically with respect to $a$ or $b$ }
+   &\Var[B(a,b)]=\frac{(a+1)(b+1)}{(a+b+2)^2(a+b+3)} \text{,  } \mu=\E[B(a,b)]=\frac{a+1}{a+b+2} \text{,  } n=a+b \\
+   &\Var=\frac{\mu\cdot(1\!\m\! \mu)}{n+3} \implies d\!\phantom{.}\!\Var=\frac{1\!\m\! 2\mu}{n+3} d{\mu} \!\m\!  \frac{\mu(1\!\m\! \mu)}{(n+3)^2} d{n} \\
+   &\mu=\frac{a+1}{a+b+2}=1\!\m\!\frac{b+1}{a+b+2} \implies \frac{\partial \mu}{\partial a}=\frac{b+1}{(a+b+2)^2} \text{ and } \frac{\partial \mu}{\partial b}=\m \frac{a+1}{(a+b+2)^2}\\
+   &d{\mu}=\frac{1\!\m\! \mu}{n+2}da \!\m\!  \frac{\mu}{n+2}db \text{ and } dn=da+db \\
+   &\frac{\partial \Var}{\partial a}=\frac{(1\!\m\! \mu)(1\!\m\! 2\mu)}{(n+3)(n+2)}\!\m\! \frac{\mu(1\!\m\! \mu)}{(n+3)^2}=\frac{1\!\m\! \mu}{n+3}\left(\frac{n+3\!\m\! (3n+8)\mu}{(n+2)(n+3)}\right)\\
+   &\text{We want to find the values where an increase in $a$ does not decrease variance given $b$} \\
+   &\frac{\partial \Var}{\partial a}=\frac{1\!\m\! \mu}{n+3}\left(\frac{n+3\!\m\! (3n+8)\mu}{(n+2)(n+3)}\right)\ge0 \\
+   &n+3\!\m\! (3n+8)\mu\ge0 \\
+   &\frac{n+3}{3n+8}\ge\mu \\
+   &\frac{1}{3}+\frac{1}{9n+24}\ge1\!\m\! \frac{b+1}{n+2}\\
+   &\frac{1}{9n+24}+\frac{b+1}{n+2}\ge\frac{2}{3}\\
+   &(9n+24)b+10n+26\ge(6n+16)(n+2)\\
+   &6n^2+(18\!\m\! 9b)n+6\!\m\! 24b \le0 \text{  carefully solving the inequality one gets}\\
+   &n=a+b\le\sqrt{(\frac{3}{4}b+\frac{7}{6})^2 \!\m\! \frac{1}{9}}+\frac{3}{4}b\!\m\! \frac{3}{2}\\
+   &a\le\sqrt{(\frac{3}{4}b+\frac{7}{6})^2 \!\m\! \frac{1}{9}}\!\m\! \frac{1}{4}b\!\m\! \frac{3}{2}\\
+   &\text{For the case $a_s<b_f$ choose $d$ such that $a_s\!+\!d$ is the closest possible to} \\
+   &\sqrt{(\frac{3}{4}b_f+\frac{7}{6})^2 \!\m\! \frac{1}{9}}\!\m\! \frac{1}{4}b_f\!\m\! \frac{3}{2}\\
+   &\text{For the case $b_f<a_s$ choose $d$ such that $b_f\!+\!d$ is the closest possible to} \\
+   &\sqrt{(\frac{3}{4}a_s+\frac{7}{6})^2 \!\m\! \frac{1}{9}}\!\m\! \frac{1}{4}a_s\!\m\! \frac{3}{2}\\
+   &\text{For the case $a_s=b_f$ variance is already at it maximum with respect to $\mu$}
+\end{flalign*}
+\par
+Credible intervals are still needed in robust Bayesian statistics. To determine $\mathcal{R(\text{Crl})}$ 
+one just needs to find the beta distribution with the lowest lower bound, $b_l$, 
+and the beta distribution with the highest upper bound, $b_u$, given the credible intervals, with \mbox{$\mathcal{R}(\text{Crl})=[b_l,b_u]$}. 
+More formally, \\ \mbox{$\displaystyle{\mathcal{R}(\text{Crl}_\alpha(\theta))=\bigcup_{\pi\in\Pi}{\text{Crl}_\alpha(\theta;\pi)}}$}.
+The Equal-Tailed Credible Interval (ETI) has the nice form, \allowbreak
+\mbox{$\displaystyle{\mathcal{R}(\text{ETI}_{1\m \alpha}(p_s))=[Q_f(\alpha /2),Q_s(1-\alpha /2)]}$},
+where $Q_f,Q_s$ are the quantile functions for $B_f,B_s$ respectively. 
+To see this assume there exist a \mbox{$\displaystyle{B_t \in \Pi}$} with \mbox{$\displaystyle{B_t(x)=B(x;a_s\!+\!a_t,b_f\!+\!b_t)}$}
+such that \mbox{$\displaystyle{Q_t(\alpha)<Q_f(\alpha)}$} for an $\alpha \in [0,1]$.
+We are interested in the relationship\footnote{$\le$ and $\ge$.} between $B_f$ and $B_t$ which switches
+only at points where $B_f(x)=B_t(x)$.
+\begin{flalign*}
+   &B(x;a_s,b_f\!+\!d)=B(x;a_s\!+\!a_t,b_f\!+\!b_t)\\
+   &\frac{(a_s\!+\!b_f\!+\!d\!+\!1)!}{a_s!(b_f\!+\!d)!}x^{a_s}(1\!\m\!x)^{b_f+d}=\frac{(a_s\!+\!a_t\!+\!b_f\!+\!b_t\!+\!1)!}{(a_s\!+\!a_t)!(b_f\!+\!b_t)!}x^{a_s+a_t}(1\!\m\!x)^{b_f+b_t}\\
+   &\frac{(a_s\!+\!b_f\!+\!d\!+\!1)!}{a_s!(b_f\!+\!d)!}(1\!\m\!x)^{d\m b_t}=\frac{(a_s\!+\!a_t\!+\!b_f\!+\!b_t\!+\!1)!}{(a_s\!+\!a_t)!(b_f\!+\!b_t)!}x^{a_t} \text{  for }x\in(0,1) \vspace{.3ex}
+\end{flalign*}
+\par
+The left side of the equation is strictly decreasing and starts out greater than the right side, 
+while the right side is strictly increasing and ends out greater than the left side. This implies
+their exist an unique \mbox{$\displaystyle{x_t \in (0,1)}$} such that \mbox{$\displaystyle{B_f(x_t)=B_t(x_t)}$} therefore,
+\begin{flalign*}
+   &B_t(x) \le B_f(x) \text{  for  } x \in [0,x_t]\\
+   &\implies F_t(x)\le F_f(x)\footnotemark{} \text{  for  }x \in [0,x_t] \text{ and}
+\end{flalign*}
+\footnotetext{$F_t$ and $F_f$ denote the cumulative distribution function of $B_t$ and $B_f$ respectively.}
+\\[-1.8\baselineskip]
+\begin{flalign*}
+   &B_f(x) \le B_t(x) \text{  for  }x \in [x_t,1] \therefore\\
+   &\int_{x}^{1}{B_f(y) dy} \le \int_{x}^{1}{B_t(y) dt}  \text{  for  }x \in [x_t,1] \\
+   &\implies 1-F_f(x) \le 1-F_t(x) \text{  for  }x \in [x_t,1] \quad \therefore\\
+   &F_t(x) \le F_f(x)\text{  for  }x \in [x_t,1] \text{ and for  }x \in [0,x_t] \quad \text{implying}\\
+   &Q_f(\alpha)=F^{\m 1}_f(\alpha)\le F^{\m 1}_t(\alpha)=Q_t(\alpha) \text{  for  } \alpha \in [0,1]
+\end{flalign*}mi
+Using the same line of reasoning it can be shown that 
+\begin{flalign*}
+   &Q_t(\alpha)\le Q_s(\alpha) \text{  for  } \alpha \in [0,1]
+\end{flalign*}
+This also implies that \mbox{$\displaystyle{\mathcal{R}(\text{Median})=\left[Q_f\left(\frac{1}{2}\right),Q_s\left(\frac{1}{2}\right)\right]}$}
+\section{Analytical Computational Methods\\ for Graphing}
+Unlike normal Bayesian statistics in which one plots their posterior, we plot the regions of values 
+$\pi(\theta)\footnote{$\pi$ denotes the probability distribution of the parameter, $\theta$.}$
+can take. Define the upper posterior as \mbox{$\displaystyle{\pi_u (x)=\sup \mathcal{R}(\Pr(p_s=x))}$} and the lower posterior 
+\mbox{$\displaystyle{\pi_l (x)=\inf \mathcal{R}(\Pr(p_s=x))}$}. 
+$\pi_u$ starts as $B_f$ and stays $B_f$ until $x$ reaches the value $x_f$ 
+where  ${{\frac{\partial B_f}{\partial a}}\big\rvert_{x_f,m}=0}$ from there $\pi_u$ continuously transition 
+throughout the $a$ values ending at the point $x_s$ where $\eval{\frac{\partial B_s}{\partial a}}_{x_s,m}=0$.
+Another way to put this is, given $x,n$ we are finding the $a$ value that maximizes $B(x;a,m\!\m\! a)$ given $a\in [a_s,a_s\!+\!d\,] $ 
+with the extrema being outside $[a_s,a_s\!+\!d\,]$ for $x \notin [x_f,x_s]$ and 
+the endpoints $B_f$ and $B_s$ being the optimal values until $x \in [x_f,x_s]$ in which an local extrema with respect to $a$ 
+is in the interval $[a_s,a_s+d]$ with $a_s$ being an extrema at ${\frac{\partial B_f}{\partial a}}\big\rvert_{x,m}=0$ 
+and $a_s+d$ being an extrema at $\eval{\frac{\partial B_s}{\partial a}}_{x,m}=0$.
+However to differentiate $B_f,B_s$ with respect to $\mathit{a}$ we need to find the derivative of $x!$. 
+To do this we first derive the extension of factorial function into $\mathbb{R}_{\ge0}.$  \vspace{.3ex}
+\begin{flalign*}
+   &\ln((M+n)!)=\ln(1\cdot2\cdot \ldots \cdot(M-1)\cdot M \cdot (M+1) \cdot (M+2) \cdot \ldots \cdot (M+n))\\
+   &\phantom{\ln((M+n)!)}\,=\ln(M!)+ \ln((M+1) \cdot (M+2) \cdot \ldots \cdot (M+n))\\
+   &\phantom{\ln((M+n)!)}\,=\ln(M!)+\ln(M^{n}+\frac{n(n\!+\!1)}{2}M^{n\m1}+\ldots+n!)\\
+   &\phantom{\ln((M+n)!)}\,=\ln(M!)+\ln(M^{n}\cdot\left(1+\frac{n(n\!+\!1)}{2M}+\ldots+\frac{n!}{M^n}\right))\\[-.2em]
+   &\ln((M+n)!)=\ln(M!)+n\ln(M)+\ln(1+\frac{n(n\!+\!1)}{2M}+\ldots+\frac{n!}{M^n})\\[-.7em]
+   &\lim_{M \to \infty}\ln(1+\frac{n(n\!+\!1)}{2M}+\ldots+\frac{n!}{M^n})=0 \quad \text{therefore}\\
+   &\lim_{M \to \infty} \ln((M+n)!) \to \ln(M!)+n\cdot\ln(M) \text{ we now assume this implies that}\\
+   &\lim_{M \to \infty} \ln((M+x)!) \to \ln(M!)+x\cdot\ln(M)\\[-.2em]
+   &\ln(x!)=\ln((M\!+\!x)!)\!\m\!\big(\!\ln((M\!+\!x)!)\!\m\! \ln(x!)\big)\\
+   &\ln(x!)=\ln((M\!+\!x)!)\!\m\!\big(\!\ln(M\!+\!x)\!+\!\ln(M\!+\!x\!\m\!1)\!+\ldots+\!\ln(x\!+\!1)\!+\!\ln(x!)\!\m\! \ln(x!) \big)\\[-.2em]
+   &\ln(x!)=\ln((M\!+\!x)!) - \sum_{k=1}^{M}{\ln(k\!+\!x)} \quad \therefore\\[-.5em]
+   &\lim_{M \to \infty} \ln(x!)=\lim_{M \to \infty} \left( \ln((M\!+\!x)!) - \sum_{k=1}^{M}{\ln(k\!+\!x)}\right)\\
+   &\ln(x!)=\lim_{M \to \infty} \left(\ln(M!)+x\ln(M) -\!\!\sum_{k=1}^{M}{\ln(k+x)}\right) \quad \therefore \\
+   &\frac{d{\hspace{.1ex}\ln(x!)}}{d{x}}=\lim_{M \to \infty} \left(\ln(M) - \sum_{k=1}^{M}{\!\frac{1}{k+x}}\right)
+   =\lim_{M \to \infty} \big(\ln(M)\!\m\! H_{M+x}\!+H_{x}\big) \quad \therefore \\
+   &\frac{d{\hspace{.1ex}\ln(x!)}}{d{x}}=H_{x}\!\m\! \gamma\footnotemark{} \quad \text{\addtocounter{footnote}{-1} and} \quad \frac{d{x!}}{d{x}}=(H_x \!\m\!  \gamma)x! \\
+\end{flalign*}
+\stepcounter{footnote}\footnotetext{This is the Euler-Mascheroni Constant $\displaystyle{\gamma}=\lim_{x \to \infty}\left(H_x-\ln(x)\right)=0.5772156649\ldots$}
+\\[-1.8\baselineskip]
+To evaluate this at non-integer points we need to derive the continuation of the Harmonic Numbers.
+\\[-1.5\baselineskip]
+\begin{flalign*}
+   &H_n\text{ denotes the nth Harmonic number with }H_n=\sum_{k=1}^{n}{\frac{1}{k}}=\frac{1}{n}+H_{n\m1} \\[-.35\baselineskip]
+   &H_{M+n}=\sum_{k=1}^{M+n}{\frac{1}{k}}=\sum_{k=1}^{M}{\frac{1}{k}}+\sum_{k=1}^{n}{\frac{1}{M+k}}
+   =H_M+\frac{n}{M}+\sum_{k=1}^{n}{\frac{1}{M+k}\!\m\!\frac{1}{M}}\\
+   &\lim_{M \to \infty}\sum_{k=1}^{n}{\frac{1}{M+k}\!\m\!\frac{1}{M}}=0 \quad \therefore 
+   \quad \lim_{M \to \infty} H_{M+n} \to H_M + \frac{n}{M}\\
+   & \text{We assume this implies } \hspace{3.48em}\lim_{M \to \infty} H_{M+x} \to H_M + \frac{x}{M}\\[-.1em]
+   &\text{We also assume that } H_{x+1}=\frac{1}{x\!+\!1}\!+\!H_{x}\Leftrightarrow H_{x+n}\!=H_{x}\!+\!\sum_{k=1}^{n}{\frac{1}{k\!+\!x}}\\[-.7em]
+   &H_{x}=H_{M+x} \m (H_{M+x}\!\m\! H_x) = H_{M+x} \m \sum_{k=1}^{M}{\frac{1}{k\!+\!x}}\\[-.3em]
+   &\lim_{M \to \infty}H_{x}=\lim_{M \to \infty}\left(H_{m+x} \m \sum_{k=1}^{M}{\frac{1}{k\!+\!x}} \right)=
+   \lim_{M \to \infty} \left(H_{M} \!+\! \frac{x}{M} \m \sum_{k=1}^{M}{\frac{1}{x\!+\!k}}\right)\\
+   &H_x=\lim_{M \to \infty}\left( \sum_{k=1}^{M}{\frac{1}{k}}+\frac{x}{M} \!\m\! \sum_{k=1}^{M}{\frac{1}{k+x}} \right)=\lim_{M \to \infty}\sum_{k=1}^{M}{\frac{1}{k}\!\m\! \frac{1}{k+x}}=\sum_{k=1}^{\infty}{\frac{1}{k}\!\m\! \frac{1}{k+x}}\\
+   &\text{We are now ready to calculate } d{\hspace{.1ex}\ln(B)}\\
+   &\frac{\partial \ln(B)}{\partial a}=\frac{\partial}{\partial a}\Big(\ln((a+b+1)!)\!\m\! \ln(a!)\!\m\! \ln(b!)+a\ln(x)+b\ln(1\!\m\! x)\Big)\\
+   &\frac{\partial \ln(B)}{\partial a}=H_{a+b+1}\!\m\!\gamma\!\m\!\left(H_a\!\m\! \gamma\right)+\ln(x)\quad\text{Likewise}\\
+   &\frac{\partial \ln(B)}{\partial b}=H_{a+b+1}\!\m\! H_b +\ln(1\!\m\!x) \therefore \\
+   &d{\hspace{.1ex}\ln(B)}=\left(H_{a+b+1}\!\m\! H_a +\ln(x)\right)d{a}+\left(H_{a+b+1}\!\m\! H_b +\ln(1-x)\right)d{b} \\
+   &\text{Now given the constraint }a+b=m\text{ using Lagrange multipliers to find }\\
+   &\text{the constrained extrema of $\ln(B)$ one gets }\frac{\partial \ln(B)}{\partial a}=\lambda 
+   \text{   and   } \frac{\partial \ln(B)}{\partial b}=\lambda \\
+   &\text{therefore } \frac{\partial \ln(B)}{\partial a}=\frac{\partial \ln(B)}{\partial b} \text{ and we can replace }b\text{ with } m\!\m\!a\text{ getting the equation}\\
+   &H_{m+1}\!\m\! H_a\!+\ln(x)=H_{m+1}\!\m\! H_{m\m a} \!+\ln(1-x) \Leftrightarrow H_{m\m a}\!\m\!H_a=\ln(\frac{1}{x}-1) \quad  \therefore\\
+   &\ln(B(x;a,m\!\m\!a))\text{ is an extrema when }x=\frac{1}{e^{H_{m\m a}\m H_a}+1}%=\frac{e^{H_a\m H_{m\m a}}}{1+e^{H_a\m H_{m\m a}}}
+   =1\!\m\! \frac{1}{1+e^{H_a\m H_{m\m a}}}\\
+   &\text{Given these constraints $B_f$ is the maximum for }0\le x\le x_f\!=\!1\!\m\! \frac{1}{1+e^{H_{\small a_s}- H_{b_{\!{\small f}}+d}}}\\
+   &\text{and $B_s$ is the maximum for }x_s\!=\!1\!\m\! \frac{1}{1+e^{H_{a_s+d} - H_{b_{\!f}}}}\le x\le 1\\
+   &\text{For }x\in[x_f,x_s]\quad \pi_u(x(a))=B(x(a);a,m\!\m\! a) \quad \text{for }a\in[a_s,a_s+d]\\
+   &\text{with } x(a)=1\!\m\! \frac{1}{1+e^{H_{a}\m H_{m \m a}}}\text{ and }\pi_u(x(a))=
+   \frac{(m+1)!}{a!(m\!\m\! a)!}\frac{e^{a(H_a\m H_{m \m a})}}{(1+e^{H_a\m H_{m \m a}})^m}\\
+   &\text{Given the constraint that $a+b=m$, the only extrema is a maximum; therefore, }\\
+   &\pi_l(x)=\min(B_s(x),B_f(x))\text{ with }\pi_l \text{ starting at $B_s(x)$ and transitioning to $B_f(x)$ } \\
+   &\text{at $x_c$ where }B_f(x_c)=B_s(x_c)\\
+   &B_f(x_c)=\frac{(m+1)!} {a_s!(b_f+d)!}x_c^{a_s}(1\!\m\! x_c)^{b_f+d}=\frac{(m+1)!}{(a_s+d)!\,b_f!}x_c^{a_s+d}(1\!\m\! x_c)^{b_f}=B_s(x_c)\\
+   &\Leftrightarrow \frac{(a_s+d)!}{a_s!}(1\!\m\! x_c)^d=\frac{(b_f+d)!}{b_f!}x_c^d \Leftrightarrow 1\!\m\! x_c=\sqrt[d]{\frac{(b_f+d)!a!}{b_f!(a_s+d)!}}x_c\\
+   &\Leftrightarrow x_c=\frac{1}{1+\prod_{k=1}^{d}{\sqrt[d]{\frac{b_f+k}{a_s+k}}}} \quad \text{and}\quad x_c \in (x_f,x_s) 
+\end{flalign*}
+If $x_c \notin (x_f,x_s)$ then there would exist $x \in [0,1]$ where $\pi_u(x)=\pi_l(x)$\\\\
+\allowbreak
+\nopagebreak
+\stepcounter{footnote}\footnotetext{The sections all use non-strict inequalities because at those points both definitions give the same answer.}
+\begin{minipage}{\linewidth}
+\hspace{-.5ex}From this one sees there are 4 sections\addtocounter{footnote}{-1}\footnotemark:
+\begin{description}
+   \item[$ \phantom{x_f}0 \le x \le x_f\phantom{1}$] $\pi_u=B_f$ and $\pi_l=B_s$
+   \item[$ \phantom{0}x_f \le x \le x_c\phantom{1}$] $\pi_u(x(a))=B(x(a);a,m\!\m\! a)$ and $\pi_l=B_s$
+   \item[$ \phantom{0}x_c \le x \le x_s\phantom{1}$] $\pi_u(x(a))=B(x(a);a,m\!\m\! a)$ and $\pi_l=B_f$
+   \item[$ \phantom{0}x_s \le x \le 1\phantom{x_s}$] $\pi_u=B_s$ and $\pi_l=B_f$
+\end{description}
+\end{minipage}
+\begin{subsection}{Example: The S\&P 500}
+\par Looking at the last 30 years of the S\&P 500 in order to determine the likelihood of the S\&P 500 being higher the next trade day 
+than the trade day before. I analyzed 2 cases using $d=100$ and $d=30$. For the case where $d=100$ what one can say about this probability 
+is still true given one saw up to 100 additional days of S\&P 500 daily increases through decreases. 
+For $d=30$ what one can say about this probability is still true given one saw up to 30 additional days of S\&P 500 daily 
+increases through decreases. Lastly, the baseline prior is the initially belief that are probabilities are equally likely $B(x;0,0)$. 
+Here is the robust Bayesian statistical analysis of the S\&P 500.\\[-1\baselineskip]
+\begin{center}
+\begin{tabularx}{\textwidth}{|>{\raggedleft\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+   \hline
+   S\&P 500&$d=30$ &$d=100$ \\ \hline
+   Successes&$4063$&$4063$\\ \hline
+   Failures&$3496$&$3496$\\ \hline
+   Total&$7559$&$7559$ \\ \hline
+   $\mathcal{R}(\text{Mean})$&$53.735\% \pm .395\%$&$53.701\% \pm 1.305\%$ \\ \hline
+   $\mathcal{R}(\text{Mode})$&$53.736\% \pm .395\%$&$53.702\% \pm 1.306\%$ \\ \hline
+   $\mathcal{R}(90\%\text{ ETI})$&$52.60\%-54.83\%$&$52.11\%-55.29\%$ \\ \hline
+   $\mathcal{R}(95\%\text{ ETI})$&$52.41\%-55.05\%$&$51.93\%-55.47\%$ \\ \hline
+   $\mathcal{R}(99\%\text{ ETI})$&$52.06\%-55.40\%$&$51.58\%-55.82\%$ \\ \hline
+\end{tabularx}
+\end{center}
+\noindent
+\\
+\begin{flushleft}
+   \begin{tikzpicture}
+      \begin{groupplot}
+         [group style={group size=2 by 2,horizontal sep=.07\textwidth, vertical sep=.1\textwidth,xlabels at=edge bottom,ylabels at=edge left
+         },
+         enlarge y limits=upper,enlarge y limits=0.04
+         height=.27\textwidth,width=.40\textwidth,xlabel = {Probability of Being Higher},ylabel = {Probability},axis x line = bottom,axis y line=left
+         ,legend style={at={(1,.06)},anchor=south east,draw=none}
+         ,clip=false,clip mode=individual,scale only axis,legend style={at={(1,.06)},anchor=south east,draw=none}]
+      \nextgroupplot[clip=false,title={$d=100$},xmax=1.02]
+         \addplot[black,thick,tension=1] table[x=x, y = y, col sep = comma] {RBA 100 upper ends=True S&P 500.csv};
+         \addplot[black,thick,loosely dashed,smooth] table[x=x, y = y, col sep = comma] {RBA 100 lower ends=True S&P 500.csv};
+         \legend{$\pi_u$,$\pi_l$}
+      \nextgroupplot[clip=false,title={$d=30$},xmax=1.02]
+         \addplot[black,thick,tension=1] table[x=x, y = y, col sep = comma] {RBA 30 upper ends=True S&P 500.csv};
+         \addplot[black,thick,loosely dashed,tension=1] table[x=x, y = y, col sep = comma] {RBA 30 lower ends=True S&P 500.csv}; 
+         \legend{$\pi_u$,$\pi_l$}   
+      \nextgroupplot[clip=false,title={$d=100$},legend style={at={(1.02,.7)}}]
+         \addplot[black,thick,tension=1.5] table[x=x, y = y, col sep = comma] {RBA 100 upper ends=False S&P 500.csv};
+         \addplot[black,thick,dashed,tension=1] table[x=x, y = y, col sep = comma] {RBA 100 lower ends=False S&P 500.csv};
+         \legend{$\pi_u$,$\pi_l$}  
+      \nextgroupplot[clip=false,title={$d=30$},legend style={at={(1,.7)}}]
+         \addplot[black,thick,tension=1.5] table[x=x, y = y, col sep = comma] {RBA 30 upper ends=False S&P 500.csv};
+         \addplot[black,thick,dashed,tension=1] table[x=x, y = y, col sep = comma] {RBA 30 lower ends=False S&P 500.csv};    
+         \legend{$\pi_u$,$\pi_l$}            
+   \end{groupplot}
+  \end{tikzpicture}
+\end{flushleft}
+\par
+From this even with $\pm100$ days of increases through decreases the probability of the S\&P 500 being higher the next trading day than the current 
+trading day is between 51.6\% and 55.8\%. Showing that in the long-run the S\&P 500 is 
+only slightly biased towards increasing from day to day.
+\end{subsection}
+\par The graph also show that a naive plotting algorithm that divides the 4 sections of the graph into equal spaced intervals 
+will result in extremely bad graphs, because for the intervals outside $[x_f,x_s]$ the algorithm will sample  1 or 2 
+points with non-negligible probability density, and the rest of the points it samples will have almost zero probability density.
+\par I implemented robust Bayesian analysis of Bernoulli trials in python using matplotlib; however, the algorithm can be effectively 
+implemented in any program or software capable of scientific computing and creating graphs. 
+\par
+If someone was plotting the curve $y=2x+2$ for $x\in [0,2]$ they would only need to provide the points:$(0,2),(2,4)$ to their graphing software 
+as the line drawn between these two points would be the linear function that they wanted plotted. 
+Therefore, what matters when plotting a function is not the function but the difference between the function and
+the linear interpolation between the points sampled. The following algorithm calculates the next $x$ point where the area 
+between the linear and quadratic approximation reaches some threshold, $\varepsilon$, and sample from there. 
+Mathematically, $\displaystyle{f(x_0+x)\approx f(x_0)+f'(x_0)x+\frac{f''(x_0)}{2}x^2}$
+and we want to find $\Delta x>0$ such that  $\displaystyle{\int_{0}^{\Delta x}{|f(x_0+t)\!\m\! (f(x_0)+f'(x_0)t)|dt} = \varepsilon}$ 
+using the second order approximation we get $\displaystyle{\int_{0}^{\Delta x}{|f(x_0)+f'(x_0)t+\frac{f''(x_0)}{2}t^2\!\m\! (f(x_0)+f'(x_0)t)|dt} = \varepsilon}$  
+so \allowbreak $\displaystyle{\int_{0}^{\Delta x}{\frac{|f''(x_0)|}{2}t^2dt} = \varepsilon}$  or 
+$\displaystyle{\frac{|f''(x_0)|}{6}{\Delta x}^3=\varepsilon}$ 
+so $\displaystyle{\Delta x=\sqrt[3]{\frac{6\varepsilon}{|f''(x_0)|}}}$. \\
+Given $f$, $\Delta x_\text{avg} \propto \varepsilon^{1/3}$ therefore,
+$\varepsilon^{\m 1/3}\propto \frac{1}{\Delta x_\text{avg}} \propto n_s$ where $n_s$ is the number of points sampled
+Using regression from different values of $d$, $n$, and $p_s$, 
+the asymptotical number of points sampled for $\pi_u$, $n_a$,  is approximately 
+$\sqrt[3]{6.61889/\varepsilon}$ giving us $\varepsilon=6.61889/n_a^3$. 
+The last thing we have to do is calculate $\displaystyle{f''}$ which comes in two variants $x$ as the independent variable
+for $x\notin[x_f,x_s]$ and where $x$ is a function of $a$ for $x \in[x_f,x_s]$. 
+We use this algorithm to sample $x$ points for $\pi_u$ and $\pi_l$ for $x \in[x_f,x_s]$
+However, from the S\&P 500 we see that as $n$ becomes large, $\pi_u$ for $x \in[x_f,x_s]$ becomes flat and so we sample $x$ individually for 
+$\pi_u$ and $\pi_l$, because in this region where $\pi_u$ is flat $\pi_l$ is the most interesting.
+In order to implement said algorithm, we will derive $\displaystyle{\frac{d^2{\pi_u}}{d{x}^2},\frac{d^2{\pi_l}}{d{x}^2}}$. \vspace{.34ex}
+\begin{flalign*}
+   &\frac{\partial B(x;a,b)}{\partial x}=\frac{\partial}{\partial x}\left(\frac{(a+b+1)!}{a!b!}x^a (1\!\m\! x)^b\right)\\
+   &\phantom{\frac{\partial B(x;a,b)}{\partial x}}=\frac{(a+b+1)!}{a!b!}\frac{a}{x}x^a(1\!\m\! x)^b+\frac{(a+b+1)!}{a!b!}\left(\frac{\m b}{1\!\m\!x}\right)x^a(1\!\m\! x)^b\\
+   &\frac{\partial B(x;a,b)}{\partial x}=\left(\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}\right)B(x;a,b)\\
+   &\frac{\partial^2{B(x;a,b)}}{{\partial x}^2}=\frac{\partial}{\partial x}\left(\left(\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}\right)B(x;a,b)\right)\\
+   &\phantom{\frac{\partial^2{B(x;a,b)}}{{\partial x}^2}}=\left(\!\m \frac{a}{x^2}\!\m\! \frac{b}{(1\!\m\! x)^2}\right)B(x;a,b)+\left(\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}\right)^{\!\!2}\! B(x;a,b)\\
+   &\frac{\partial^2{B(x;a,b)}}{{\partial x}^2}=\left[\left(\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}\right)^{\!\!2}\!\!\m\! \left(\frac{a}{x^2}+\frac{b}{(1\!\m\! x)^2}\right)\right]B(x;a,b)\\
+   &\text{For } x \in[x_f,x_s]\quad x(a)=\frac{e^{H_a \m H_{m \m a}}}{1+e^{H_{a}\m H_{m \m a}}} \text{ but to compute }\frac{d{x}}{d{a}} \\
+   &\text{we first need to be able to compute }\frac{d{H_t}}{d{t}} \text{ recall } H_t=\sum_{k=1}^{\infty}{\frac{1}{k}\!\m\! \frac{1}{k+t}}\\
+   &\frac{d{H_t}}{d{t}}=\sum_{k=1}^{\infty}{\frac{1}{(k+t)^2}}=\psi_1(t)\footnotemark \text{ In general, }
+   \frac{d^{\hspace{.05ex}n}{\!H_t}}{{d{t}}^n}=\psi_n(t)\footnotemark=\sum_{k=1}^{\infty}{\frac{(\!\m\! 1)^{n+1}n!}{(k+t)^{n+1}}} \quad \therefore
+   \text{\addtocounter{footnote}{-1}\addtocounter{footnote}{-1}}
+\end{flalign*} 
+\stepcounter{footnote}\footnotetext{This is the trigamma function.} 
+\stepcounter{footnote}\footnotetext{Using nonstandard notation of $k$ starting at 1 and not at 0 for the polygamma functions,$\psi_n$.}
+\begin{flalign*}
+   &\frac{d{x}}{d{a}} =\frac{e^{H_a\m H_{m \m a}}}{(1+e^{H_a\m H_{m \m a}})^2}(\psi_1(a)+\psi_1(m\!\m\! a))=\frac{\psi_1(a)+\psi_1(m\!\m\! a)}{1+e^{H_a\m H_{m \m a}}}x\\
+   &\frac{d^2{x}}{d{a}^2}=\frac{\psi_2(a)\!\m\! \psi_2(m\!\m\! a)}{1+e^{H_a\m H_{m \m a}}}x\!\m\! \frac{e^{H_a\m H_{m \m a}}(\psi_1(a)+\psi_1(m\!\m\! a))^2}{(1+e^{H_a\m H_{m \m a}})^2}x
+   +\frac{(\psi_1(a)+\psi_1(m\!\m\! a))^2}{(1+e^{H_a\m H_{m \m a}})^2}x\\
+   &1\!\m\! 2x=1\!\m\! \frac{2e^{H_a\m H_{m \m a}}}{1+e^{H_a\m H_{m \m a}}}=\frac{1\!\m\! e^{H_a\m H_{m \m a}}}{1+e^{H_a\m H_{m \m a}}} \quad \therefore \\
+   &\frac{d^2{x}}{d{a}^2}=\frac{x}{1+e^{H_a\m H_{m \m a}}}\left(\psi_2(a)\!\m\! \psi_2(m\!\m\! a)+(1\!\m\! 2x)\big(\psi_1(a)+\psi_1(m\!\m\! a)\big)^2\right)\\
+   &\text{For }x\in [x_f,x_s] \:\:\: \pi_u(a)=B(x(a);a;m\!\m\! a)=\frac{(m+1)!}{a!(m\!\m\! a)!}\frac{e^{a(H_a\!\m\! H_{m \m a})}}{(1+e^{H_a\m H_{m \m a}})^m}\\
+   &\ln{\pi_u(a)}=\ln((m+1)!)\!\m\! \ln(a!)\!\m\! \ln((m\!\m\! a)!)+a(H_a\!\m\! H_{m \m a})\!\m\! m\ln(1+e^{H_a\m H_{m \m a}})\\
+   &\frac{d{\ln{\pi_u}}}{d{a}}=\gamma\!\m\! H_a\!\m\! \gamma\!+\!H_{m \m a}\!+\!H_a\!\m\! H_{m \m a}\!+\!a(\psi_1(a)\!+\!\psi_1(m\!\m\! a))\!\m\! mx(a)\!\cdot\!(\psi_1(a)\!+\!\psi_1(m\!\m\! a))\\
+   &\frac{d{\ln{\pi_u}}}{d{a}}=(a\!\m\! mx(a))(\psi_1(a)+\psi_1(m\!\m\! a))\\
+   &\frac{d^2{\ln{\pi_u}}}{d{a}^2}=\frac{d{}}{da}\left((a\!\m\! mx(a))(\psi_1(a)+\psi_1(m\!\m\! a))\right)\\
+   &\phantom{\frac{d^2{\ln{\pi_u}}}{d{a}^2}}=\Big(1\!\m\! m\frac{\psi_1(a)\!+\!\psi_1(m\!\m\! a)}{1\!+\!e^{H_a\m H_{m \m a}}}x(a)\Big)(\psi_1(a)\!+\!\psi_1(m\!\m\! a))\!+\!(a\!\m\! mx(a))(\psi_2(a)\!\m\! \psi_2(m\!\m\! a))\\
+   &\text{Surprisingly } \frac{d^2{f}}{{d{x}}^2} \centernot\iff 1\text{/}{\frac{d^2{x}}{{d{f}}^2}} \quad \text{Proof: }f(x)=x^2 \quad \frac{d^2{f}}{d{x}^2}=2 \quad 1\text{/}\frac{d^2{x}}{d{f}^2}=- 4x^3\\ 
+   &\frac{d^2{\pi_u}}{{d{x}}^2}=\frac{d{}}{d{x}}\left(\frac{d{\pi_u}}{d{x}}\right)=\frac{d{}}{d{a}}\left(\frac{d{\pi_u}}{d{x}}\right)\cdot\frac{d{a}}{d{x}}
+   =\frac{d{}}{d{a}}\left(\frac{d{\pi_u}}{d{a}}\frac{d{a}}{d{x}}\right)\cdot\frac{d{a}}{d{x}}\\
+   &\phantom{\frac{d^2{\pi_u}}{{d{x}}^2}}=\left(\frac{d^2{\pi_u}}{{d{a}}^2}\frac{d{a}}{d{x}}+\frac{d{\pi_u}}{d{a}}\cdot\frac{d{}}{d{a}}\left(\frac{d{a}}{d{x}}\right)\right)\cdot\frac{d{a}}{d{x}}\\
+   &\phantom{\frac{d^2{\pi_u}}{{d{x}}^2}}=\frac{d^2{\pi_u}}{{d{a}}^2}\left(\frac{d{a}}{d{x}}\right)^2+\frac{d{\pi_u}}{d{a}}\frac{d{a}}{d{x}}\cdot\frac{d{}}{d{a}}\left(\frac{1}{\frac{d{x}}{d{a}}}\right)
+   =\frac{d^2{\pi_u}}{{d{a}}^2}\left(\frac{d{a}}{d{x}}\right)^2+\frac{d{\pi_u}}{d{a}}\frac{d{a}}{d{x}}\cdot\left(\!\m\! \frac{1}{\left(\frac{d{x}}{d{a}}\right)^2}\frac{d^2{x}}{{d{a}}^2} \right)\\
+   &\frac{d^2{\pi_u}}{{d{x}}^2}=\frac{d^2{\pi_u}}{{d{a}}^2}\left(\frac{d{a}}{d{x}}\right)^{\!\!2}\!\m\! \frac{d{\pi_u}}{d{a}}\left(\frac{d{a}}{d{x}}\right)^{\!\!3}\frac{d^2{x}}{{d{a}}^2} \\
+   &\frac{d^2{\ln \pi_u}}{{d{a}}^2}=\frac{d{}}{d{a}}\left(\frac{\pi_u'}{\pi_u}\right)=\frac{\pi_u''}{\pi_u}\!\m\! \frac{(\pi_u')^2}{\pi_u^2}=\frac{\pi_u''}{\pi_u}\!\m\! \left(\frac{d{\ln \pi_u}}{d{a}}\right)^{\!\!2}\quad\therefore\\
+   &\frac{d^2{\pi_u}}{{d{x}}^2}=\pi_u\left(\frac{d^2{\ln \pi_u}}{{d{a}}^2}+\left(\frac{d{\ln \pi_u}}{d{a}}\right)^{\!\!2}\right)\quad\therefore\\
+   &\frac{d^2{\pi_u}}{{d{x}}^2}=\pi_u\left(\frac{d{a}}{d{x}}\right)^{\!\!2}\left(\frac{d^2{\ln \pi_u}}{{d{a}}^2}+\frac{d{\ln \pi_u}}{d{a}}\left(\frac{d{\ln \pi_u}}{d{a}}\!\m\! \frac{d{a}}{d{x}}\frac{d^2{x}}{{d{a}}^2}\right)\right)\text{  for }x\in[x_f,x_s]\\
+\end{flalign*}
+Now that we know all of the derivatives we are ready to describe the \mbox{implementation:}
+\pagebreak 
+\begin{center}
+   \begin{minipage}[t]{.45\textwidth}
+      \begin{align*}
+         &\varepsilon \gets \frac{6.61889}{n_a^3}\\
+         &h\gets \sqrt[3]{6\varepsilon}\\
+         &x \gets x_f\\
+         &\pi_u,\pi_l=B_f,B_s\\
+         &\textbf{While }x\ge0\text{:}\\
+         &\qquad \textbf{Sample }\pi_u,\pi_l  \vspace{.5ex}\\
+         &\qquad x \gets x-\frac{h}{\sqrt[3]{\left\lvert\frac{d^2{\pi_u}}{d{x}^2}\left(x\right)\right\rvert}}\\
+         &a\gets a_s\\
+         &\pi_u(a)=\pi(x(a),a,m\m a)\\
+         &\textbf{While }a\le a_s+d\text{:}\\
+         &\qquad x\gets x(a,m\m a)\\
+         &\qquad \textbf{Sample } \pi_u\\
+         &\qquad a \gets a+\frac{d{a}}{d{x}}\frac{h}{\sqrt[3]{\left\lvert\frac{d^2{\pi_u}}{d{x}^2}\left(x\right)\right\rvert}}
+      \end{align*}
+      \vspace{0pt}
+   \end{minipage}
+   \hfill
+   \begin{minipage}[t]{.45\textwidth}
+   \begin{align*}
+      &x\gets x_c \\
+      &\textbf{While }x\ge x_f\text{:}\\
+      &\qquad \textbf{Sample } \pi_l\\
+      &\qquad x \gets x-\frac{h}{\sqrt[3]{\left\lvert\frac{d^2{\pi_l}}{d{x}^2}\left(x\right)\right\rvert}}\\   
+      &x\gets x_c \\
+      &\pi_u,\pi_l=B_s,B_f\\
+      &\textbf{While }x\le x_s\text{:}\\
+      &\qquad \textbf{Sample } \pi_l\\
+      &\qquad x \gets x+\frac{h}{\sqrt[3]{\left\lvert\frac{d^2{\pi_l}}{d{x}^2}\left(x\right)\right\rvert}}\\    
+      &\textbf{While }x\le1\text{:}\\
+      &\qquad \textbf{Sample }\pi_u,\pi_l  \vspace{.5ex}\\
+      &\qquad x \gets x+\frac{h}{\sqrt[3]{\left\lvert\frac{d^2{\pi_u}}{d{x}^2}\left(x\right)\right\rvert}}   
+   \end{align*}
+   \vspace{0pt}
+   \end{minipage}
+\end{center}
+\par
+The author's implementation of the code can be found at \\
+\mbox{\textit{\href{https://github.com/RaleighPriour/Robust-Bayesian-Analysis}{github.com/RaleighPriour/Robust-Bayesian-Analysis}\cite{Raleigh}}}
+\nopagebreak \par
+The last thing we will show is that the highest probability density value of $\pi_u$ is in the distribution with its mode furthest from $\frac{1}{2}$ which is 
+$B_f(\frac{a_s}{m})$ when $2a_s\le n$ and $B_s(\frac{a_s+d}{m})$ when $2a_s\ge n$. As well as, \mbox{Mode $B_f\le x_f$} and 
+\mbox{$x_s\le\text{Mode }B_s$}. We shall do this by looking at the structure of the beta family.\\
+\begin{flalign*}
+   &\text{By definition } \max\{B(x;a,b) \mid x \in [0,1]\}=B(\text{Mode }B(a,b);a,b).\\
+   &\text{Taking the gradient of the beta family with the parameterization of the }\\
+   &\text{mode denoted as $\nu$ and $n$ one gets}\\
+   &B(\nu,n\nu,n(1\m \nu))=\frac{(n+1)!}{(n\nu)!(n(1 \m \nu))!}\nu^{n\nu}(1\m \nu)^{n(1 \m \nu)} \quad \therefore\\
+   &\frac{\partial \ln B}{\partial \nu}=n(H_{n\nu} \m \gamma) \m n(H_{n(1 \m \nu)} \m \gamma) + n +n\ln(\nu) \m n \m n\ln(1\m \nu)\\
+   &\frac{\partial \ln B}{\partial \nu}=n(H_{n\nu} \!-\! H_{n(1\m\nu)})+n\ln(\frac{\nu}{1\m\nu}) \\
+   &\text{Now notice that }\frac{\partial \ln B}{\partial \nu}\text{ is }0\text{ and odd}\footnotemark\text{ about the point }\nu=\frac{1}{2}\text{ and is increasing}
+\end{flalign*}
+\footnotetext{$\frac{\partial \ln B}{\partial \nu}(\nu=\frac{1}{2}\m t)=\m\frac{\partial \ln B}{\partial \nu}(\nu=\frac{1}{2}+t)$}
+\noindent
+\!\!\!Therefore with respect to $\nu$ the beta distribution achieves a minimum at $\nu=\frac{1}{2}$ and symmetrically increases from $\nu=\frac{1}{2}$. 
+\begin{flalign*}
+   &\text{Now let us look at the beta distribution's behavior with respect to }n\\
+   &\frac{\partial \ln B}{\partial n}=H_{n+1}\m\gamma\m \nu(H_{n\nu}\m\gamma) \m (1\m \nu)(H_{n(1\m \nu)} \m\gamma) + \nu\ln(\nu)+(1\m\nu)\ln(1\m\nu)\\
+   &\frac{\partial \ln B}{\partial n}=H_{n+1} \m \nu H_{n\nu} \m (1\m\nu)H_{n(1\m\nu)} + \nu\ln(\nu)+(1\m\nu)\ln(1\m\nu)\\
+   &\text{It is obvious that }\frac{\partial \ln B}{\partial n}\text{ is non-decreasing with respect to }n\text{.} \\
+   &\text{Evaluating }\frac{\partial \ln B}{\partial n}\text{ at }n=0 \text{ one gets }\frac{\partial \ln B}{\partial n}\Bigr\rvert_{n=0}\!\!=1+\nu\ln(\nu)+(1\m\nu)\ln(1\m\nu)\\
+   &\text{Which has a minimum of }1\m\ln(2)\text{ at $\textstyle \nu=\frac{1}{2}$ which one can easily verify. }
+\end{flalign*}\noindent
+Therefore the probability density at any beta distribution's modal value increases with respect to $n$, 
+which makes intuitive sense the more data one collects the more informed their posterior distribution should be.
+From the gradient of the beta distribution we see that the highest probability density value of $\pi_u$ is in the distribution with its mode furthest from $\frac{1}{2}$ which is 
+$B_f(\frac{a_s}{m})$ when $2a_s\le n$ and $B_s(\frac{a_s+d}{m})$ when $2a_s\ge n$
+% \begin{flalign*}
+%    &\max{\pi_u}=\max\{\max\{\pi(x)\mid\pi\in\Pi\}\mid x\in [0,1]\}\\
+%    &\phantom{\max{\pi_u}}=\max\{\max\{\pi(x)\mid x \in [0,1]\}\mid \pi\in \Pi\}\\
+%    &\max{\pi_u}=\max\left\{B\left(\frac{a}{m};a,m \m a\right) \bigg\vert \: a\in [a_s,a_s+d_{\,}]\right\}\\
+%    &y(a)=B\!\left(\text{Mode }B(a,m\!\m\! a);a,m \!\m\! a\right)=\frac{(m+1)!}{a!(m\m a)!}\frac{a^a(m\m a)^{(m\m a)}}{m^m}\\
+%    &\ln{y(a)}=\ln((m+1)!)\m\ln(a!)\m\ln((m\m a)!)+a\ln(a)+(m\m a)\ln(m\m a)\m m\ln(m)\\
+%    &\text{Since $\ln$ is a strictly increasing function and $y(a)>0$ this implies}\\
+%    &\max{\pi_u}=\max{\{\ln{y(a)}\mid a\in [a_s,a_s+d]\}}\text{ which occurs when }\frac{d{\ln y}}{d{a}}=0\\
+%    &\frac{d{\ln y}}{d{a}}=\m H_a+\gamma+H_{m\m a}\m\gamma+\ln(a)+1\m\ln(m\m a)\m 1\\
+%    &\frac{d{\ln y}}{d{a}}=H_{m\m a}\m\ln(m\m a)\m\left(H_{a}\m\ln(a)\right)\\
+%    &\text{Let }f(x)=H_x\m \ln(x)\text{ so }\frac{d{\ln y}}{d{a}}=f(m\m a)\m f(a)\\
+%    &\ln{y}\text{ achieves a local extrema when }f(a)=f(m\m a)\text{ This only happens when }\\
+%    &a=m\!\m\!a \Leftrightarrow a=\frac{m}{2}\text{ because }f\text{ is a strictly decreasing function and therefore injective\footnotemark}
+%    \text{\addtocounter{footnote}{-1}}
+% \end{flalign*} 
+% \stepcounter{footnote}\footnotetext{Suppose $f(a)=f(m\m a)$ since $f$ is injective this implies $a=m\m a$.} 
+% \vspace{-1.2ex}
+% \begin{flalign*}   
+%    &\text{To see that }f\text{ is strictly decreasing we will show that }f'(x)<0\text{ for all }x>0\\
+%    &f'(x)=\frac{d{H_x}}{d{x}}\m \frac{1}{x}=\sum_{k=1}^{\infty}{\frac{1}{(k+x)^2}}\m\frac{1}{x}<\int_{0}^{\infty}{\frac{1}{(k+x)^2}d{\boldsymbol{k}}}\m\frac{1}{x}\\
+%    &\phantom{f'(x)}<\eval{\m \frac{1}{k+x}+C}_{k=0}^{k=\infty}\m\frac{1}{x}=\frac{1}{x}\m\frac{1}{x}=0\quad\therefore\\
+%    &f'(x)<0\text{ so $f$ is a strictly decreasing and injective function}\\
+%    &\text{for }a<\frac{m}{2}\qquad m\m a>a  \quad \text{so} \quad f(m\m a)<f(a)\\
+%    &\text{Since }\frac{d{\ln y}}{d{a}}=f(m\m a)\m f(a)\qquad\text{This shows }\frac{d{\ln y}}{d{a}}\text{ is decreasing from }\\
+%    &a=0\text{ to }a=\frac{m}{2}\text{ and similarly that }\frac{d{\ln y}}{d{a}}\text{ is increasing from $a=\frac{m}{2}$ to $a=m$}
+% \end{flalign*} \par
+% Therefore, $\ln{y(a)}$ achieves a global minimum at $a=\frac{m}{2}$ for $a\in [0,m]$ and symmetrically increase from $\frac{m}{2}$,
+% \allowbreak\mbox{$\ln{y(\frac{m}{2}-a)}=\ln{y(\frac{m}{2}-a)}$}. Therefore, $\pi_u$'s maximum given $a\in [a_s,a_s+d]$ is 
+% $B_f(\frac{a_s}{m})$ when $2a_s\le n$ and $B_s(\frac{a_s+d}{m})$ when $2a_s\ge n$ 
+\par
+Finally, we will show \mbox{Mode $B_f\le x_f$} and \mbox{$x_s\le\text{Mode }B_s$}. 
+By showing the following inequalities:
+\begin{flalign*}
+   &\qquad\text{Mode }B(a,m\!\m\!a)<x(a)<\frac{1}{2} \quad \text{when  }a<\frac{m}{2}\\
+   &\qquad\frac{1}{2}=x(a)=\text{Mode }B(a,m\!\m\!a) \quad \text{when  }a=\frac{m}{2}\\
+   &\qquad\frac{1}{2}<x(a)<\text{Mode }B(a,m\!\m\!a) \quad \text{when  }a>\frac{m}{2}\\
+   &\text{Recall }x(a)=1\!\m\! \frac{1}{1+e^{H_a\m H_{m\m a}}} \text{  and  } \ln(\frac{x(a)}{1\!\m\!x(a)})=H_a\!\m\! H_{m\m a}\\
+   &H_a\!\m\! H_{m\m a}=\sum_{k=1}^{\infty}{\frac{1}{k}\!\m\!\frac{1}{k+a}}-\sum_{k=1}^{\infty}{\frac{1}{k}\!\m\!\frac{1}{k+m\!\m\!a}}
+   =\sum_{k=1}^{\infty}{\frac{1}{k+m\!\m\! a}\m \frac{1}{k+a}}\\
+   &\text{assume }a>\frac{m}{2}\text{ so the sum is positive and therefore }\\
+   &\ln(\frac{x(a)}{1\m x(a)})=\sum_{k=1}^{\infty}{\frac{1}{k+m\!\m\! a}\m \frac{1}{k+a}}<\int_{0}^{\infty}{\frac{1}{k+m\m a}\m\frac{1}{k+a}\,d{\boldsymbol{k}}}\\
+   &\ln(\frac{x(a)}{1\m x(a)})<\eval{\ln\left(\frac{k+m\m a}{k+a}\right)+C}_{k=0}^{k=\infty}=\ln\left(\frac{a}{m\m a}\right)\\
+   &\frac{x(a)}{1\m x(a)}<\frac{a}{m\m a} \Leftrightarrow x(a)<\frac{a}{m\!\m\!a}\m \frac{a}{m\!\m\!a}x(a) \Leftrightarrow \frac{m}{m\!\m\!a}x(a)<\frac{a}{m\!\m\!a}\\
+   &x(a)<\frac{a}{m}=\text{Mode }B(a,m-a)\\
+   &\text{If }a=\frac{m}{2}\text{ then }x(a)=1\!\m\! \frac{1}{1\!+\!e^{H_{m/2}\m H_{m\m m/2}}}=1\!\m\!\frac{1}{2}=\frac{1}{2}\text{ and Mode }B(\frac{m}{2},m)=\frac{1}{2}\\
+   &\text{Finally, if }a<\frac{m}{2}\text{ then }\ln\left(\frac{x(a)}{1\!\m\!x(a)}\right)=H_{a}\!\m\!H_{m\m a}=-(H_{(m\m a)}\!\m\!H_{m\m (m\m a)}) \,\therefore\\
+   &\ln\left(\frac{x(a)}{1\!\m\!x(a)}\right)=-\ln\left(\frac{x(m\!\m\!a)}{1\!\m\!x(m\!\m\!a)}\right)>
+   -\ln\left(\frac{(m\!\m\! a)}{m-(m\!\m\! a)}\right)=-\ln\left(\frac{m\!\m\! a}{a}\right)\\
+   &\frac{x(a)}{1\!\m\!x(a)}>\frac{a}{m\!\m\!a}\implies \text{Mode }B(a,m\!\m\!a)=\frac{a}{m}<x(a)<\frac{1}{2} 
+\end{flalign*}
+\section{Discussion}
+\subsection{Implementation}
+As said previously my implementation can be found on \href{https://github.com/RaleighPriour/Robust-Bayesian-Analysis}{\textbf{github\footnote{https://github.com/RaleighPriour/Robust-Bayesian-Analysis}}}. 
+The implementation I have written can handle up to $n\approx2^{63}\approx10^{22}$ after that due to matplotlib 
+and other libraries use of 64 bit numbers the graphs outputted become unstable; 
+however, the actually statistics work for up to $n\approx10^{150}$ after that python is unable to handle the numerical values.
+I also tried the procedure of calculating the  next sample point where the difference between the linear and 
+quadratic approximation reach some threshold. Along with a method where the angle between the points plotted 
+reached some threshold from 180°. Both methods worked significantly worse than the original cumulative error method.
+\subsection{Case where $a_s=0$ or $b_f=0$}
+Unlike the cases where $\displaystyle \lim_{n \to \infty } a_s,b_f \!\to \infty$ where the beta distribution approaches the normal distribution.
+In these cases, $\pi_u$ and $\pi_l$ approach the same 2 relative curves that are most certainly not the 
+normal distribution. Here is an example with $d=4$
+\noindent
+\begin{center}
+   \input{RBAFIG/RBA n=10^6.pgf}
+   \input{RBAFIG/RBA n=10^12.pgf}
+\end{center}
+\subsection{Choosing Degree of Prior Certitude}
+This is a very interesting question. Considering the S\&P 500 for our discussion, 30 years is a long time with the dataset containing 7559 
+trade days. An initial thought is to first start with the baseline prior and then calculate one's posterior having 
+$d=\lambda\E[\sigma]=\lambda\sqrt{n}\E[\sqrt{p_s(1\!\m\!p_s)}]$. However, by doing this ones is changing the hyperparameter, $d$, based on the data 
+and cannot define $d$ before the data is collected.
+What one can do instead is compute the $\lambda\sqrt{n}\E[\sqrt{p_s(1\!\m\!p_s)}]$ of their baseline prior. 
+For the S\&P 500 analysis $d=100$, $\lambda\approx2.93$ and for $d=30$ is $\lambda\approx0.88$. 
+However, this again is not the point of robust Bayesian analysis since 
+the amount of reasonable priors do not increase proportionally to the $\sqrt{n}$. 
+Moreover, the point of robust Bayesian statistics is not to be a worse way of computing confidence intervals. Using 
+confidence intervals in robust Bayesian statistics allows at least $\gamma$ credibility\footnote{$\text{Crl}_{\gamma}(\theta;\pi\in\Pi)\in\mathcal{R}(\text{Crl}_{\gamma}(\theta))$} that the 
+parameter of interest, $\theta$ is in \mbox{$\mathcal{R}(\text{Crl}_{\gamma}(\theta))$}. 
+So when using credible intervals scaling $d$ by $\sqrt{n}$ is unneeded and just allows one's 
+credible intervals for their parameters to be excessively vague.
+\subsection{$[x_f,x_s]$ Region}
+From the Analysis of the S\&P 500 we see that it gets a flat top. 
+$\pi_u$ for $x\in[x_f,x_s]$ becomes flat after around 50 to 100 datapoints given one gets both success and failures.
+This means that for large $n$ only 2 or 3 points are actually sampled and since the region is bounded between \mbox{Mode $B_f$}.
+Moreover, the length of $[x_f,x_s]$ is less than $\frac{d}{n+d}$ while $\sigma\propto\frac{1}{\sqrt{n}}$ so the interesting 
+transition region of $\pi_u$ from $B_f$ to $B_s$ becomes negligible as $n$ becomes large. 
+\subsection{Conclusion}
+This paper has derived the basic descriptive statistics for robust Bayesian analysis of the beta distribution and computed all the steps to create 
+an very effective graphing algorithm for $\pi_l$ and $\pi_u$. Additionally, it showed how robust Bayesian analysis can
+be used in the real world by determining the likelihood that  the S\&P 500 will be higher at the end of the next trading day than it was at the last trading day is between 52\%$-$55\%.
+\bibliographystyle{plainnat}
+\bibliography{RBA.bib}
+\end{document}
