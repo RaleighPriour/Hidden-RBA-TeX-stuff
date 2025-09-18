@@ -4,12 +4,13 @@
 \contentsline {subsection}{\numberline {2.2}Descriptive Statistics of the Beta Distribution}{4}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Example}{5}{subsection.2.3}%
 \contentsline {section}{\numberline {3}Framework for Robust Bayesian Statistics}{5}{section.3}%
-\contentsline {section}{\numberline {4}RBA for Bernoulli Trials}{7}{section.4}%
+\contentsline {section}{\numberline {4}RBA for Bernoulli Trials}{8}{section.4}%
 \contentsline {section}{\numberline {5}Analytical Computational Methods\\ for Graphing}{10}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Example: The S\&P 500}{13}{subsection.5.1}%
-\contentsline {section}{\numberline {6}Discussion}{20}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Implementation}{20}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Case where $a_s=0$ or $b_f=0$}{21}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Choosing Degree of Prior Certitude}{21}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}$[x_f,x_s]$ Region}{22}{subsection.6.4}%
-\contentsline {subsection}{\numberline {6.5}Conclusion}{22}{subsection.6.5}%
+\contentsline {section}{\numberline {6}Discussion}{21}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Implementation}{21}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Case where $a_s=0$ or $b_f=0$}{22}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Choosing Degree of Prior Certitude}{22}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}$[x_f,x_s]$ Region}{23}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Conclusion}{23}{subsection.6.5}%
+\contentsline {section}{References}{23}{subsection.6.5}%

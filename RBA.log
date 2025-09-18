@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.23)  17 SEP 2025 17:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.7.23)  17 SEP 2025 21:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -891,13 +891,13 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 [2]
+
+[3]
 Overfull \hbox (9.76347pt too wide) detected at line 153
 []
  []
 
 
-
-[3]
 
 [4]
 ===== Image 'RBAFig/RBA-figure0' is up-to-date. ======
@@ -907,12 +907,6 @@ Overfull \hbox (9.76347pt too wide) detected at line 153
 Overfull \hbox (31.22736pt too wide) in paragraph at lines 203--218
 []\OT1/cmr/m/n/12 For ro-bust Bayesian statis-tics, de-fine the rea-son-able se
 t []
- []
-
-
-Overfull \hbox (2.11273pt too wide) in paragraph at lines 219--242
-[]\OT1/cmr/m/n/12 Now sup-pose one ro-tated an ob-ject with [] and got \OT1/cmr
-/m/it/12 S,T,H\OT1/cmr/m/n/12 .
  []
 
 
@@ -943,17 +937,20 @@ Overfull \hbox (2.44327pt too wide) in paragraph at lines 319--333
  []
 
 
+
+[10]
 Overfull \hbox (13.43178pt too wide) detected at line 350
 []
  []
 
 
-
-[10]
 Underfull \hbox (badness 10000) in paragraph at lines 350--355
 
  []
 
+
+
+[11]
 
 LaTeX Font Warning: Command \small invalid in math mode on input line 390.
 
@@ -972,8 +969,6 @@ Overfull \hbox (27.48169pt too wide) detected at line 390
  []
 
 
-
-[11]
 
 [12]
 pdfTeX warning (ext4): destination with the same identifier (name{Hfootnote.11}
@@ -1006,21 +1001,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 425--427
 ===== Image 'RBAFig/RBA-figure1' is up-to-date. ======
 
 
-[14 <./RBAFig/RBA-figure1.pdf>]
+[14]
 
-[15]
+[15 <./RBAFig/RBA-figure1.pdf>]
 Overfull \hbox (4.29973pt too wide) detected at line 500
 []
  []
 
 
+
+[16]
 Overfull \hbox (56.07773pt too wide) detected at line 525
 []
  []
 
 
+Overfull \vbox (2.28885pt too high) has occurred while \output is active []
 
-[16
+
+
+[17
 pdfTeX warning (ext4): destination with the same identifier (name{Hfootnote.14}
 ) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
@@ -1034,7 +1034,7 @@ ibe the []
 
 
 
-[17]
+[18]
 Underfull \hbox (badness 10000) in paragraph at lines 570--573
 
  []
@@ -1046,7 +1046,7 @@ Overfull \hbox (10.33374pt too wide) detected at line 581
 
 
 
-[18]
+[19]
 Overfull \hbox (14.95592pt too wide) detected at line 592
 []
  []
@@ -1058,7 +1058,7 @@ Overfull \hbox (11.47832pt too wide) detected at line 646
 
 
 
-[19]
+[20]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 656.
@@ -1085,9 +1085,9 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 
-[20] (RBAFIG/RBA n=10^6.pgf) (RBAFIG/RBA n=10^12.pgf)
+[21] (RBAFIG/RBA n=10^6.pgf) (RBAFIG/RBA n=10^12.pgf)
 
-[21]
+[22]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 679.
@@ -1129,18 +1129,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--27
 
 )
 
-[22] (RBA.aux)
+[23] (RBA.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-07-11>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `RBA.out' has not changed.
-(rerunfilecheck)             Checksum: 65EB75CA14ED0D110E80D3AFB22577E5;2748.
+(rerunfilecheck)             Checksum: 233BD618EEDC45BD5AD651C1E5D6F7AC;2847.
  ) 
 Here is how much of TeX's memory you used:
- 32231 strings out of 468149
- 760148 string characters out of 5431082
- 1268028 words of memory out of 5000000
+ 32232 strings out of 468149
+ 760155 string characters out of 5431082
+ 1259028 words of memory out of 5000000
  60227 multiletter control sequences out of 15000+600000
  643545 words of font info for 100 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1181,9 +1185,9 @@ nts/cm/cmtt12.pfb><C:/Users/ralei/AppData/Local/Programs/MiKTeX/fonts/type1/pub
 lic/amsfonts/symbols/msam10.pfb><C:/Users/ralei/AppData/Local/Programs/MiKTeX/f
 onts/type1/public/amsfonts/symbols/msam7.pfb><C:/Users/ralei/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on RBA.pdf (22 pages, 399921 bytes).
+Output written on RBA.pdf (23 pages, 401404 bytes).
 PDF statistics:
- 400 PDF objects out of 1000 (max. 8388607)
- 60 named destinations out of 1000 (max. 500000)
- 143 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 409 PDF objects out of 1000 (max. 8388607)
+ 61 named destinations out of 1000 (max. 500000)
+ 151 words of extra memory for PDF output out of 10000 (max. 10000000)
 

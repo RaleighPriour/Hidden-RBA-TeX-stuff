@@ -83,14 +83,14 @@ Although different people have different beliefs (priors), Robust Bayesian Analy
 from a baseline prior, for example an uninformative prior, and accepts all beliefs obtainable from that prior
 given one saw at most the degree of prior certitude of beliefs, $d$, more points of evidence as reasonable. 
 Inside the collection of reasonable probability distribution, nothing can be said about which prior/posterior is the \textit{correct} one. 
-The point of Robust Bayesian Statistics is to convince ones audience of their result by encapsulating the viewer's belief's in their baseline.
+The point of Robust Bayesian Statistics is to convince one's audience of their result by encapsulating the viewer's belief's in their baseline.
 Which departs from the usual goal of statistics to efficiently as possible determine conclusion from the data. 
-In short, the goal of Robust Bayesian Statistics is to be convincing rather than efficent.
+In short, the goal of Robust Bayesian Statistics is to be convincing rather than efficient.
 This paper goes through the derivation of the beta distribution as the conjugate prior for
 the binomial distribution. Then it derives formulas and inequalities for Robust Bayesian Analysis of Bernoulli Trials.
 In order to explain a graphing algorithm, which the author has implemented in python, 
 for the maximum and minimum reasonable probabilities about the chance of success, $p_s$, of the binomial distribution. 
-The author uses the last 30 years of the S\&P 500\cite{SP500} as an example to illustrate the methods covered in the paper.
+The author uses the last 30 years of the S\&P 500\cite{SP500} as an example to illustrate the methods covered in this paper.
 \pagebreak
 \tableofcontents
 \par
@@ -108,7 +108,7 @@ $x$ is the chance(probability) of success.
 Suppose the first two houses they went to did not buy a vacuum and let
 $x=p_s$  therefore  $1\!\m\! x=1\!\m\! p_s=p_f$ where  $p_f$  is the probability of failure.
 Given $p_f$ the probability of getting 2 failures and 0 successes is $(1\!\m\! p_f)^2$. \allowbreak The \mbox{(probability that $p_s=x$)$\propto (1\!\m\! x)^2$}. 
-Integrating ones gets $ \displaystyle\int_0^1 (1\!\m\! x)^2 dx =\eval{ \m \frac{1}{3}(1 \m x)^3 + C}_0^1=\frac{1}{3} $ therefore 
+Integrating one gets $ \displaystyle\int_0^1 (1\!\m\! x)^2 dx =\eval{ \m \frac{1}{3}(1 \m x)^3 + C}_0^1=\frac{1}{3} $ therefore 
 \allowbreak $\displaystyle\Pr(p_s=x|\text{2 failures})\footnote{$\Pr(X|Y)$ means the probability of X given Y.}=3(1\!\m\! x)^2$ 
 with the $3$ having no significance other than being the normalization constant. 
 In general,\vspace{.7ex} \allowbreak \mbox{$\Pr(X | \text{Data})=\displaystyle\frac{\Pr(\text{Data} | X)\Pr(X)}{\Pr(\text{Data})}$}  (Baye's Theorem). 
@@ -147,8 +147,8 @@ With \mbox{$\Pr(p_s=x)=\displaystyle\frac{x^a (1\!\m\! x)^b}{\int_{0}^{1} x^a (1
    &\Var[B(a,b)]=\frac{(a+1)(b+1)}{(a+b+2)^2 (a+b+3)} \allowdisplaybreaks \\
    &\text{Mode for $a,b > 0$} \Leftrightarrow  \argmax_x \ln(B(x;a,b)) \Leftrightarrow \frac{\partial \ln(B(x;a,b))}{\partial x}=0\\
    &\ln(B(x;a,b))=\ln((a+b+1)!)\!\m\! \ln(a!)\!\m\! \ln(b!)+a\ln(x)+b\ln(x)\\
-   &\frac{\partial \ln(B(x;a,b))}{\partial x}=\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}=0\\
-   &\phantom{\frac{\partial \ln(B(x;a,b))}{\partial x}=}a(1\!\m\! x)\!\m\! bx=0 \therefore x=\frac{a}{a+b}\\
+   &\frac{\partial \ln(B(x;a,b))}{\partial x}=\frac{a}{x}\!\m\! \frac{b}{1\!\m\! x}=0
+   \iff a(1\!\m\! x)\!\m\! bx=0 \therefore x=\frac{a}{a+b}\\
    &\text{Mode of $B(a,b)$}=\frac{a}{a+b} \quad \text{for $a,b > 0$}
 \end{flalign*}
 \subsection{Example}
@@ -183,14 +183,14 @@ the chance (probability) of success is $B(x;2,10)$.
 \section{Framework for Robust Bayesian Statistics}
 \indent There are many problems in which general consensus on the exact prior is not universal. For example, lets say 
 one was modeling the height of Redwood trees as normally distributed with a prior mean, $\mu$, and standard deviation, $\sigma$.
-Now suppose one person modeled $\Pr(\sigma=x) \propto \frac{1}{x}$ while a second person modeled standard deviation as 
+Additionally, suppose one person modeled $\Pr(\sigma=x) \propto \frac{1}{x}$ while a second person modeled standard deviation as 
 $\Pr(\sigma=x)=x e^{\!\m  x}$.
 Both of these are reasonable priors with the first one being scale invariant, while the second excludes implausible scales such as 
-the tree's standard deviation being a mile. If data is collected and the posteriors for standard deviation disagree on parameters, 
+the tree's standard deviation being a mile. If data is collected on the heights of Redwood trees and the posteriors for standard deviation disagree on parameters, 
 such as the mean or credibility intervals, then said parameters cannot be derived from the data to much confidence since different 
 reasonable starting points result in incompatible results. There is a popular phrase in statistics, 
 \textit{let the data speak for itself}\footnote{This phrase is popular in frequentist statistics not Bayesian.},
-by incorporating multiple reasonable priors and showing what these posteriors agree allows \textit{the data to speak for itself},
+by incorporating multiple reasonable priors and showing what these posteriors agrees on allows \textit{the data to speak for itself},
 because it shows how one interprets the data does not significantly affect their conclusion. 
 This is the definition I use for robust Bayesian statistics having statistical procedures that given a little more or less data 
 does not significantly change the posterior.
@@ -198,7 +198,7 @@ does not significantly change the posterior.
 The problem this paper will be focused on is robust Bayesian statistics for the beta distribution.
 We will determine the likelihood that  the S\&P 500 
 will be higher at the end of the next trading day than it was at the last trading day %\footnote{without accounting for inflation.} 
-based off the last 30 years the S\&P 500. The answer is surprisingly low between 52\%$-$55\%.
+based off the last 30 years of the S\&P 500. The answer is surprisingly low between 52\%$-$55\%.
 \par
 For robust Bayesian statistics, define the reasonable set \allowbreak
 \mbox{$\mathcal{R}(\theta)=\{\, \pi(\theta) \mid \pi \in \Pi \}\ $} for a parameter, $\theta$, with $\Pi$ being the set 
@@ -216,7 +216,7 @@ will have a more positive outlook, then the data itself is not strong enough to 
 Bayesians generally do not like the phrase \textit{let the data speak for itself} because one's knowledge about the situation (one's prior)
 changes what they take away from the data (their posterior).
 \par
-Now suppose one rotated an object with \mbox{3 sections: \textit{T,S,H}} 
+For example, suppose one rotated an object with \mbox{3 sections: \textit{T,S,H}} 
 and got \textit{S,T,H}. Now suppose it was spinner with sides of equal area labeled \textit{T,S,H}. 
 This result would be unsurprising and would not give one knowledge 
 that change their preconceived beliefs about the spinner, that each side is probably approximately equally likely as the others. 
@@ -228,10 +228,10 @@ observation. It would be ridiculous to conclude from those 3 coins tosses that t
 is about as likely as it landing on its head. It is only rational to incorporate one's knowledge about events in their model 
 which can led the exact same data data leading to radically different conclusion as shown here.
 Fortunately, robust Bayesian statistics does allow \textit{the data to speak for itself} because if all reasonable viewpoints (priors)
-led to the a small $\mathcal{R}(\theta)$ set then one has usable clear conclusions which were not the results of someone's prior 
-but the nature of the data. While it is still annoying to have a small range for a parameter instead of an exact number
-such as the beliefs about the mean of $B(x;a,b)$ ranging from .68 to .72,
-the real annoying truth is we want more precision than the data we collected can give us.
+led to a small $\mathcal{R}(\theta)$ set then one has usable clear conclusions which were not the results of someone's prior 
+but the nature of the data. While it is still annoying to have a small range for a parameter instead of an exact number,
+such as the beliefs about the mean of $B(x;a,b)$ ranging from .68 to .72.
+The real annoying truth is we want more precision than the data we collected can give us.
 Going back to the vacuum salesperson example if the actual chance (probability) of success is 
 $31.00\%$ it would take 32868 observations to be 95\% certain that the probability of successes is within $31\% \pm .5\%$ .
 Nonetheless, if a person had a 100 experts in a room there would be very little they could unanimously agree 
@@ -254,7 +254,7 @@ and $b_f+b^\prime$ failures.
    &B_s(x)=B(x;a_s\!+\!d,b_f)=\frac{(m+1)!}{(a_s+d)!b_f!}x^{a_s+d}(1\!\m\! x)^{b_f} \\
    &\mathcal{R}(\text{Mean})\left[\frac{a_s+1}{a_s+b_f+d+1},\frac{a_s+d+1}{a_s+d+b_f+1}\right] \\
    &\mathcal{R}(\text{Mode})=\left[\frac{a_s}{a_s+b_f+d},\frac{a_s+d}{a_s+d+b_f}\right]   
-   &\intertext{Variance and standard deviation are tricker, because variance does not decrease monotonically with respect to $a$ or $b$ }
+   &\intertext{Variance and standard deviation are tricker, because they do not decrease monotonically with respect to $a$ or $b$. }
    &\Var[B(a,b)]=\frac{(a+1)(b+1)}{(a+b+2)^2(a+b+3)} \text{,  } \mu=\E[B(a,b)]=\frac{a+1}{a+b+2} \text{,  } n=a+b \\
    &\Var=\frac{\mu\cdot(1\!\m\! \mu)}{n+3} \implies d\!\phantom{.}\!\Var=\frac{1\!\m\! 2\mu}{n+3} d{\mu} \!\m\!  \frac{\mu(1\!\m\! \mu)}{(n+3)^2} d{n} \\
    &\mu=\frac{a+1}{a+b+2}=1\!\m\!\frac{b+1}{a+b+2} \implies \frac{\partial \mu}{\partial a}=\frac{b+1}{(a+b+2)^2} \text{ and } \frac{\partial \mu}{\partial b}=\m \frac{a+1}{(a+b+2)^2}\\
@@ -305,16 +305,16 @@ their exist an unique \mbox{$\displaystyle{x_t \in (0,1)}$} such that \mbox{$\di
 \\[-1.8\baselineskip]
 \begin{flalign*}
    &B_f(x) \le B_t(x) \text{  for  }x \in [x_t,1] \therefore\\
-   &\int_{x}^{1}{B_f(y) dy} \le \int_{x}^{1}{B_t(y) dt}  \text{  for  }x \in [x_t,1] \\
+   &\int_{x}^{1}{B_f(y) dy} \le \int_{x}^{1}{B_t(y) dy}  \text{  for  }x \in [x_t,1] \\
    &\implies 1-F_f(x) \le 1-F_t(x) \text{  for  }x \in [x_t,1] \quad \therefore\\
    &F_t(x) \le F_f(x)\text{  for  }x \in [x_t,1] \text{ and for  }x \in [0,x_t] \quad \text{implying}\\
    &Q_f(\alpha)=F^{\m 1}_f(\alpha)\le F^{\m 1}_t(\alpha)=Q_t(\alpha) \text{  for  } \alpha \in [0,1]
-\end{flalign*}mi
+\end{flalign*}
 Using the same line of reasoning it can be shown that 
 \begin{flalign*}
    &Q_t(\alpha)\le Q_s(\alpha) \text{  for  } \alpha \in [0,1]
 \end{flalign*}
-This also implies that \mbox{$\displaystyle{\mathcal{R}(\text{Median})=\left[Q_f\left(\frac{1}{2}\right),Q_s\left(\frac{1}{2}\right)\right]}$}
+This also implies that \mbox{$\displaystyle{\mathcal{R}(\text{Median})=\left[Q_f\left(\frac{1}{2}\right),Q_s\left(\frac{1}{2}\right)\right]}$}.
 \section{Analytical Computational Methods\\ for Graphing}
 Unlike normal Bayesian statistics in which one plots their posterior, we plot the regions of values 
 $\pi(\theta)\footnote{$\pi$ denotes the probability distribution of the parameter, $\theta$.}$
@@ -333,10 +333,10 @@ To do this we first derive the extension of factorial function into $\mathbb{R}_
 \begin{flalign*}
    &\ln((M+n)!)=\ln(1\cdot2\cdot \ldots \cdot(M-1)\cdot M \cdot (M+1) \cdot (M+2) \cdot \ldots \cdot (M+n))\\
    &\phantom{\ln((M+n)!)}\,=\ln(M!)+ \ln((M+1) \cdot (M+2) \cdot \ldots \cdot (M+n))\\
-   &\phantom{\ln((M+n)!)}\,=\ln(M!)+\ln(M^{n}+\frac{n(n\!+\!1)}{2}M^{n\m1}+\ldots+n!)\\
-   &\phantom{\ln((M+n)!)}\,=\ln(M!)+\ln(M^{n}\cdot\left(1+\frac{n(n\!+\!1)}{2M}+\ldots+\frac{n!}{M^n}\right))\\[-.2em]
-   &\ln((M+n)!)=\ln(M!)+n\ln(M)+\ln(1+\frac{n(n\!+\!1)}{2M}+\ldots+\frac{n!}{M^n})\\[-.7em]
-   &\lim_{M \to \infty}\ln(1+\frac{n(n\!+\!1)}{2M}+\ldots+\frac{n!}{M^n})=0 \quad \text{therefore}\\
+   &\phantom{\ln((M+n)!)}\,=\ln(M!)+\ln(M^{n}+\frac{n(n\!\m\!1)}{2}M^{n\m1}+\ldots+n!)\\
+   &\phantom{\ln((M+n)!)}\,=\ln(M!)+\ln(M^{n}\cdot\left(1+\frac{n(n\!\m\!1)}{2M}+\ldots+\frac{n!}{M^n}\right))\\[-.2em]
+   &\ln((M+n)!)=\ln(M!)+n\ln(M)+\ln(1+\frac{n(n\!\m\!1)}{2M}+\ldots+\frac{n!}{M^n})\\[-.7em]
+   &\lim_{M \to \infty}\ln(1+\frac{n(n\!\m\!1)}{2M}+\ldots+\frac{n!}{M^n})=0 \quad \text{therefore}\\
    &\lim_{M \to \infty} \ln((M+n)!) \to \ln(M!)+n\cdot\ln(M) \text{ we now assume this implies that}\\
    &\lim_{M \to \infty} \ln((M+x)!) \to \ln(M!)+x\cdot\ln(M)\\[-.2em]
    &\ln(x!)=\ln((M\!+\!x)!)\!\m\!\big(\!\ln((M\!+\!x)!)\!\m\! \ln(x!)\big)\\
@@ -665,7 +665,7 @@ normal distribution. Here is an example with $d=4$
 \subsection{Choosing Degree of Prior Certitude}
 This is a very interesting question. Considering the S\&P 500 for our discussion, 30 years is a long time with the dataset containing 7559 
 trade days. An initial thought is to first start with the baseline prior and then calculate one's posterior having 
-$d=\lambda\E[\sigma]=\lambda\sqrt{n}\E[\sqrt{p_s(1\!\m\!p_s)}]$. However, by doing this ones is changing the hyperparameter, $d$, based on the data 
+$d=\lambda\E[\sigma]=\lambda\sqrt{n}\E[\sqrt{p_s(1\!\m\!p_s)}]$. However, by doing this one is changing the hyperparameter, $d$, based on the data 
 and cannot define $d$ before the data is collected.
 What one can do instead is compute the $\lambda\sqrt{n}\E[\sqrt{p_s(1\!\m\!p_s)}]$ of their baseline prior. 
 For the S\&P 500 analysis $d=100$, $\lambda\approx2.93$ and for $d=30$ is $\lambda\approx0.88$. 
@@ -686,6 +686,7 @@ transition region of $\pi_u$ from $B_f$ to $B_s$ becomes negligible as $n$ becom
 This paper has derived the basic descriptive statistics for robust Bayesian analysis of the beta distribution and computed all the steps to create 
 an very effective graphing algorithm for $\pi_l$ and $\pi_u$. Additionally, it showed how robust Bayesian analysis can
 be used in the real world by determining the likelihood that  the S\&P 500 will be higher at the end of the next trading day than it was at the last trading day is between 52\%$-$55\%.
+\addcontentsline{toc}{section}{References}
 \bibliographystyle{plainnat}
 \bibliography{RBA.bib}
 \end{document}
